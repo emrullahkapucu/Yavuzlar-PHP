@@ -13,11 +13,13 @@ Siber Vatan **Yavuzlar** takımındaki haftalık web geliştirme görevlerim (20
 2. `db.php` içindeki veritabanı bilgilerini kendi ortamınıza göre düzenleyin.
 3. Klasörü yerel bir PHP sunucusunda (ör. XAMPP) çalıştırın.
 
-## Güvenlik notu
+## Güvenlik notu: bilinçli zafiyetler
 
-Bu proje öğrenme amaçlı yazıldı ve bilinçli olarak düzeltilmemiş açıklar içeriyor:
+Bu uygulama, Yavuzlar takımındaki Red Team çalışmaları sırasında **SQL Injection pratiği için bilinçli olarak zafiyetli** yazıldı.
 
-- Giriş ve kayıt sorgularında kullanıcı girdisi doğrudan SQL'e ekleniyor → **SQL Injection** açığı var. Düzeltmesi: parametreli sorgular (`$DB->prepare("... WHERE eposta = ?")` + `execute([$eposta])`).
-- Parolalar düz metin saklanıyor. Düzeltmesi: `password_hash()` ve `password_verify()`.
+| Zafiyet | Nerede | Güvenli hâli |
+|---|---|---|
+| SQL Injection | `login.php`, `register.php`, `insert.php`: kullanıcı girdisi doğrudan sorguya ekleniyor | Parametreli sorgu: `$DB->prepare("... WHERE eposta = ?")` + `execute([$eposta])` |
+| Düz metin parola | `kullanicilar` tablosu | `password_hash()` ile saklama, `password_verify()` ile kontrol |
 
-Canlı bir sunucuda kullanmayın.
+Yalnızca yerel ortamda, eğitim amacıyla çalıştırın. Canlı bir sunucuya koymayın.
